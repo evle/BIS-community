@@ -1,0 +1,5 @@
+mixin label (topic)
+  if topic.top 
+    span 置顶
+  else 
+    a(href=`/?tag=${topic.tag}`)= topic.tag 

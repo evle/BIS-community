@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  .wp-right
+    - if(current_user)
+      //- != partial('./sidebar/user_info', {user : current_user})
+      //- include ./sidebar/create_topic
+      
+      //- .wp-left
+      //-   .panel.index
+      //-     .panel-hd 
+      //-       div.nav
+      //-         a(href="/" class= current_tag === 'all' ? 'active': '') 全部
+      //-         each tag in tags
+      //-           a(href=`/?tag=${tag}` class= current_tag === tag ? 'active': '')= tag
+                
+      //-     .panel-bd
+
+      //- <div class="card text-center">
+      //-   <div class="card-header">
+      //-     Featured
+      //-   </div>
+      //-   <div class="card-body">
+      //-     <h5 class="card-title">Special title treatment</h5>
+      //-     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      //-     <a href="#" class="btn btn-primary">Go somewhere</a>
+      //-   </div>
+      //-   <div class="card-footer text-muted">
+      //-     2 days ago
+      //-   </div>
+      //- </div>
+      //- <span class="badge badge-secondary"
+  .container.fluid
+    .row
+      each topic in topics
+        .card.w-25
+          .card-body
+            .card-title: a(href=`/topic/${topic._id}` title=topic.title)= topic.title 
+            .card-subtitle.mb-2.text-muted #{topic.author.username}  
+            p.card-text 
+              if topic.reply 
+                span 最后由 #{topic.reply.author.username} 回复于 #{getTimeAgo(topic.last_reply_at)} 
+              else
+                span 由 #{topic.author.username} 发表于 #{getTimeAgo(topic.create_time)}
+            p.card-text 回复:#{topic.reply_count} &emsp;&emsp;浏览:#{topic.visit_count}
+                 
+    //- - var pageBaseUrl = `/?tag=${current_tag}`;
+    include ./includes/page

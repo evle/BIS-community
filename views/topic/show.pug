@@ -1,0 +1,195 @@
+extends ../layout
+
+block css
+  link(rel="stylesheet", href="http://apps.bdimg.com/libs/highlight.js/9.1.0/styles/github.min.css")
+
+block content
+  .container
+    .row: h4=topic.title 
+      span.badge.badge-danger #{topic.tag}
+      //- != partial('./sidebar/user_info', {user : topic.author, title: '作者信息'})
+      //- include ../sidebar/user_topic_list
+      //- .wp-left
+      //-   .wp-breadcrumb
+        //- ol.breadcrumb 
+              //-   li: a(href="/") <span class="ico-home"></span> 首页
+              //-   li: a(href="/?tag=" + topic.tag)
+            
+    .row.content-title
+      if topic.top 
+        span.badge.badge-primary 置顶
+      //- span.text-middle= t
+      if current_user && current_user.isAdmin
+        a.btn.btn-primary#top(href=`/topic/${topic._id}/top` data-loading="提交中……")= topic.top ? '取消置顶' : '置顶'
+        a.btn.btn-danger#del(href=`/topic/${topic._id}/delete`  data-loading="提交中……")= topic.deleted ? '恢复' : '删除'
+
+      //- a.(href="/?tag=" + topic.tag) <span class="icon ico-tag"></span> #{topic.tag}
+    
+      a.author(href="/user/" + topic.author.username) #{topic.author.username} &nbsp;
+      a 发布于 #{getTimeAgo(topic.create_time)} &emsp;
+      if current_user && (current_user.username == topic.author.username || current_user.isAdmin)
+        a(href="/topic/" + topic._id + '/edit') 编辑
+
+    .row.mt
+      !=topic.content
+
+    hr
+    if(replys.length)
+      .row.mb-10 #{replys.length}个回答
+      ul.list-group
+        each reply in replys
+          li.list-group-item
+            a(id=reply._id)              
+            a(href="/user/" + reply.author.username)
+              img.img-reply(src=reply.author.avatar_url, alt=reply.author.username width="32" height="32")
+              if current_user && (current_user.isAdmin || current_user.username === reply.author.username)
+                a(href=`/reply/${reply._id}/delete` title="删除回复"): span.ico-trash
+                a(href=`/reply/${reply._id}/edit`  title="编辑回复"): span.ico-edit
+              a.interval-l.reply-user(href="#" data-user=reply.author.username title="回复"): span.ico-undo
+            .user-info.small
+              a.reply-name(href=`/user/${reply.author.username}` target="_blank")= reply.author.username 
+              span.date= " 于" + getTimeAgo(reply.create_time)
+            != reply.content
+              
+             
+    if (current_user)
+      .alert.alert-danger.hide#alert
+      form(action=`/topic/${topic._id}/reply` method="post")
+        .form-gorup
+          textarea#editor.form-control.mt-10.mb-10(name="content" placeholder="请认真回复")     
+        button.btn.btn-success.mb-20(type="submit" id="replyBtn" data-loading="回复中……") 回复
+    
+    
+block script
+  script(src="https://cdn.bootcss.com/medium-editor/5.23.3/js/medium-editor.min.js")
+  //- include ../includes/editor
+
+  script
+    :uglify
+      $(function () {
+        hljs.initHighlightingOnLoad();
+          var editor = new MediumEditor('#editor');
+       
+        // 获取所有回复用户
+        var replyUsers = [];
+        $('.reply-name').each(function (k, v) {
+          var name = $(v).text().trim();
+          if(replyUsers.indexOf(name) === -1 ) {
+            replyUsers.push(name);
+          }
+        });
+
+        // 编辑器相关
+        $('#editor').each(function(){
+          var editor = new Editor({
+            status: false
+          });
+          var $el = $(this);
+
+          editor.render(this);
+          //绑定editor
+          $(this).data('editor', editor);
+
+          var $input = $(editor.codemirror.display.input);
+
+          $input.keydown(function(event){
+            if (event.keyCode === 13 && (event.ctrlKey || event.metaKey)) {
+              event.preventDefault();
+              $el.closest('form').submit();
+            }
+          });
+
+          // at.js 配置
+          var codeMirrorGoLineUp = CodeMirror.commands.goLineUp;
+          var codeMirrorGoLineDown = CodeMirror.commands.goLineDown;
+          var codeMirrorNewlineAndIndent = CodeMirror.commands.newlineAndIndent;
+          var noop = function (){};
+          $input.atwho({
+            at: '@',
+            data: replyUsers
+          })
+          .on('shown.atwho', function () {
+            CodeMirror.commands.goLineUp = noop;  
+            CodeMirror.commands.goLineDown = noop;
+            CodeMirror.commands.newlineAndIndent = noop;
+          })
+          .on('hidden.atwho', function () {
+            CodeMirror.commands.goLineUp = codeMirrorGoLineUp;
+            CodeMirror.commands.goLineDown = codeMirrorGoLineDown;
+            CodeMirror.commands.newlineAndIndent = codeMirrorNewlineAndIndent;
+          });
+          // END at.js 配置
+
+        });
+        // END 编辑器相关
+
+        // 回复用户添加 @
+        $('.reply-user').click(function (e) {
+          e.preventDefault();
+          var user = $(this).data('user');
+          var editor = $('#editor').data('editor');
+          if(editor.codemirror.getValue().indexOf('@' + user) < 0) {
+            editor.push('@' + user + "  ");
+          }
+        });
+
+        // 置顶
+        $('#top').click(function (e) {
+          e.preventDefault();
+          var _this = this;
+          $.get(this.href, function (result) {
+            if(result.status) {
+              return alert(result.message);
+            }
+            if(result.top) {
+              $(_this).text('取消置顶');
+            } else {
+              $(_this).text('置顶');
+            }
+          })
+        })
+
+        // 删除帖子
+        $('#del').click(function (e) {
+          e.preventDefault();
+          if (!confirm('确定要'+ $(this).text() +'此话题吗？')) {
+            return false;
+          }
+          $.get(this.href, function (result) {
+            if(result.status) {
+              alert(result.message);
+            } else if(result.deleted){
+              location.href = '/';
+            } else {
+              location.reload();
+            }
+          })
+        });
+
+        // 删除回复
+        $('.del-reply-btn').click(function (e) {
+          e.preventDefault();
+          if(!confirm('确定要删除此回复吗？')) {
+            return false;
+          }
+          $.get(this.href, function (result) {
+            if(result.status) {
+              alert(result.message);
+            } else {
+              location.reload();
+            }
+          })
+        })
+        
+        var $btn = $('.btn');
+        var $alert = $('#alert');
+        // 回复话题
+        $('#replyBtn').click(function (event) {
+          var content = editor.codemirror.getValue();
+          if(content.length == 0 ) {
+            alert('请输入回复内容');
+            editor.codemirror.focus();
+            return false;
+          };
+        })
+      })

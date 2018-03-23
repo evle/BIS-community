@@ -1,0 +1,10 @@
+.page
+  - var url = pageBaseUrl ? pageBaseUrl + '&' : '?';
+  ul.pagination
+    li.page-item: a.page-link(href=page.start < page.current ? `${url}page=${page.current - 1}` : 'javascript:;') &laquo;
+    - for (var i = page.start; i <= page.end; i++)
+      - if (page.current == i)
+        li.page-item: span= i
+      - else
+        li.page-item: a.page-link(href=`${url}page=${i}`)= i
+    li.page-item: a.page-link(href= page.end > page.current ? `${url}page=${page.current + 1}` : 'javascript:;') &raquo;

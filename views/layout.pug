@@ -1,0 +1,82 @@
+doctype html
+html(lang="zh_CN")
+  head
+    meta(charset="utf-8")
+    meta(name="description" content=config.description)
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width,initial-scale=1,user-scalable=no")
+    meta(name="author" content="kdylan")
+    title= title + ' - ' + sitename
+    //- 放facvion
+    //- link(rel="shortcut icon" href="/public/images/icon.png" type="image/x-icon")
+    link(href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet")
+    link(href="https://cdn.bootcss.com/medium-editor/5.23.3/css/medium-editor.min.css" rel="stylesheet")
+    link(href="https://cdn.bootcss.com/medium-editor/5.23.3/css/themes/default.min.css" rel="stylesheet")
+    //- link(href="./public/stylesheets/style.css" rel=stylesheet)
+    != Loader('/public/javascripts/lib/editor/editor.css').css('/public/stylesheets/markdown.css').css('/public/javascripts/lib/webuploader/webuploader.css').css('/public/stylesheets/foundation.min.css').done(assets,'', !isDebug)
+    //- block css
+    //- != Loader('/public/stylesheets/style.css').done(assets,'', !isDebug)
+    block css
+  body
+    nav.navbar.navbar-light.bg-light.navbar-expand-lg.pd-nav
+      a.navbar-brand(href="#") 标准化社区
+        span.color-subtitle  BIS
+      ul.navbar-nav.mr-auto
+        li.nav-item.active: a.nav-link(href="/") 首页
+        li.nav-item: a.nav-link(href="/") 问答
+        li.nav-item: a.nav-link(href="/") 专栏
+        li.nav-item: a.nav-link(href="/ads") 培训         
+      - if (current_user)
+        ul.navbar-nav
+          li.nav-item: a.nav-link(href="/topic/create") 发表话题
+          li.nav-item: a.nav-link(href="/user/setting") 设置
+          li.nav-item: a.nav-link.message(href="/user/message") 消息
+            if current_user.messageLen
+              span.sub= current_user.messageLen
+          li.nav-item: a.nav-link(href="/user/logout") 退出
+      - else
+        ul.navbar-nav
+          li.nav-item: a.nav-link.btn-signin(href="/user/login") 登录
+          li.nav-item: a.nav-link.btn(href="/user/register") 注册
+    div.intro-banner
+      p.intro-title 在BIS，学习标准化、提高服务能力
+      p.intro-content 每个月，我们对百万中小企业家进行标准化培训，致力于提升企业的标准化发展战略。
+    block content
+    
+    hr
+    footer
+      .container
+        .row.justify-content-center.subfooter
+          .col-4
+            ul.navbar-nav.lul 联系我们
+              li.nav-item: a.nav-link(href="#") 微信号
+              li.nav-item: a.nav-link(href="#") 官网
+              li.nav-item: a.nav-link(href="#") 最新活动
+          .col-4
+            ul.navbar-nav 商务
+              li.nav-item: a.nav-link(href="#") 企业培训
+              li.nav-item: a.nav-link(href="#") 广告投放
+              li.nav-item: a.nav-link(href="#") 合作联系
+          .col-4
+            ul.navbar-nav 条款
+              li.nav-item: a.nav-link(href="#") 服务条款
+        .row.justify-content-center.copyright
+          Copyright © 2018 北京标准化研究院    
+
+    script(src="https://cdn.bootcss.com/medium-editor/5.23.3/js/medium-editor.min.js")
+    != Loader('/public/javascripts/lib/lib.min.js').js('/public/javascripts/lib/jquery.min.js').js('/public/javascripts/jquery.loadData.js').js('/public/javascripts/jquery.modal.js').js('/public/javascripts/main.js').js('foundation.min.js').done(assets,null,!isDebug)
+    script
+      :uglify
+        $(function () {
+          //-  $(document).foundation();
+          $('#navBtn').click(function () {
+            $('#navUser').slideToggle(200);
+          })
+        });
+        $('#searchForm').submit(function (event) {
+          event.preventDefault();
+          var query = "site:jsclub.cc+" + $('#searchQuery').val();
+          window.open("https://www.google.com.hk/?gws_rd=cr#hl=zh-CN&q=" + query);
+        })
+    block script
+  

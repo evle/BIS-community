@@ -1,0 +1,4 @@
+.row 作者其它主题
+    ul.list-group
+      each item in topic.author_topic_list
+        li.list-group-item: a(href="/topic/"+ item._id)= item.title

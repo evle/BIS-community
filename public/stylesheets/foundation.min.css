@@ -1,0 +1,156 @@
+nav{
+    border-top:4px solid #00a362;
+}
+
+.color-subtitle{
+    font-size: 1.5rem;
+    color:#00a362
+}
+
+.btn-signup{
+    color:#00a362
+}
+
+.test{
+    border: 1px solid red;
+}
+
+.btn-signin a{
+    color:#00a362;
+}
+
+.mt-10{
+    margin-top: 2rem;
+}
+
+.pd-nav{
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+nav ul li {
+    margin-right: 1rem;
+}
+
+
+.intro-banner{
+    height: 10rem;
+    color: rgb(255, 255, 255);
+    background-color: #00a362;
+    background-image: url(../images/banner-bg.svg);
+    background-repeat: repeat-y; 
+    -moz-transform:scaleX(-1);
+    -webkit-transform:scaleX(-1);
+    -o-transform:scaleX(-1);
+    transform:scaleX(-1);
+    /* background-image: url(banner-bg.svg); */
+    padding-left: 5rem;
+    padding-right: 5rem;
+    margin-bottom: 3rem;
+}
+.card{
+    margin-bottom: 1rem;
+    box-shadow: 0px 0px 5px #888888;
+    margin-right: 1rem;
+}
+.intro-title{
+    /* margin-top: 40px; */
+    padding-top: 2rem;
+    margin-bottom: 20px;
+    font-size: 30px;
+    -moz-transform:scaleX(-1);
+    -webkit-transform:scaleX(-1);
+    -o-transform:scaleX(-1);
+    transform:scaleX(-1);
+
+}
+.intro-content{
+    margin-bottom: 40px;
+    font-size: 18px;
+    -moz-transform:scaleX(-1);
+    -webkit-transform:scaleX(-1);
+    -o-transform:scaleX(-1);
+    transform:scaleX(-1);
+    
+}
+
+.post-list{
+    margin-top: 2rem;
+    padding-left: 5rem;
+    width:55rem;
+}
+
+.card-header{
+    padding: 0.1rem;
+}
+
+footer{
+    margin-bottom: 4rem;
+    font-size: 13px;
+    color: #888;
+}
+
+footer ul{
+    color: black;
+    /* border: 2px solid red; */
+   /* margin-bottom: 3rem; */
+}
+
+footer ul li:first-child{
+    margin-top: 0.75em; 
+}
+footer ul li a{
+    color: #888;
+}
+
+.copyright{
+    margin-top: 2rem;
+}
+.subfooter{
+    margin-left: 2rem;
+}
+hr{
+    margin-bottom: 3rem;
+}
+.hr-style{
+    size: 20rem;
+}
+.editable{
+
+}
+
+
+.wd-login{
+    width: 25rem;
+}
+
+.wd-max{
+    width:15rem;
+}
+
+.wd-10{
+    width:5rem;
+}
+
+.mb-10{
+    margin-bottom: 2rem;
+}
+.mb-20{
+    margin-bottom: 4rem;
+}
+
+.hide{
+    display: none;
+}
+
+
+.content-title{
+    margin-bottom: 2rem;
+}
+.author{
+    color: #00a362;
+}
+
+
+.img-reply{
+    border-radius: 50%;
+}

@@ -1,0 +1,15 @@
+.card.wd-max
+  .card-header #{title || '个人信息'}
+  .card-img-top:  img.center-block(src=user.avatar_url, alt=user.username, width="85" height="85")
+  .card-body
+    h5.card-title: a(href=`/user/${user.username}`)= user.username
+    if(user.isAdmin)
+      .span.badge.badge-info (管理员)
+  ul.list-group.list-group-flush
+    li.list-group-item 积分: #{user.score}
+    li.list-group-item 话题:
+      a(href=`/user/${user.username}/topic`)=user.topic_count
+    li.list-group-item 个人说明:
+       p= user.signature
+
+        
