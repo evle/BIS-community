@@ -1,9 +1,11 @@
 const router = require('koa-router')();
 
-router.get('/ads', async (ctx, next) => {
-    await ctx.render('ads/bis-ads', {
+router.get('/bis', async (ctx, next) => {
+  
+  ctx.body = 'ads';
+  // await ctx.render('ads/bis-ads', {
         
-      })
+    //   })
     
   })
 

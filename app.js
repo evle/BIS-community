@@ -34,27 +34,6 @@ onerror(app);
 // logger
 app.use(convert(logger()));
 
-
-// 本地调试状态
-if(config.debug) {
-  app.use(require('./middlewares/stylus')(__dirname));
-  const livereload = require('livereload');
-  let server = livereload.createServer({
-    exts: ['jade','styl'] 
-  });
-  server.watch([
-    __dirname + '/public',
-    VIEWSDIR
-  ]);
-} else {
-  try {
-    assets = require('./assets.json');
-  } catch (e) {
-    console.error('请先执行 make build 生成assets.json文件')
-    throw e;
-  }
-}
-
 // middlewares
 app.use(convert(require('koa-static2')("/public",__dirname + '/public')));
 app.use(convert(bodyparser));
@@ -145,7 +124,7 @@ router.use('/', index.routes(), index.allowedMethods());
 router.use('/user', user.routes(), user.allowedMethods());
 router.use('/topic', topic.routes(), topic.allowedMethods());
 router.use('/reply', reply.routes(), topic.allowedMethods());
-router.use('/', ads.routes(), index.allowedMethods());
+router.use('/ads', ads.routes(), ads.allowedMethods());
 app.use(router.routes(), router.allowedMethods());
 
 // response

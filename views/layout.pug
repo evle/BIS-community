@@ -25,7 +25,7 @@ html(lang="zh_CN")
         li.nav-item.active: a.nav-link(href="/") 首页
         li.nav-item: a.nav-link(href="/") 问答
         li.nav-item: a.nav-link(href="/") 专栏
-        li.nav-item: a.nav-link(href="/ads") 培训         
+        li.nav-item: a.nav-link(href="/ads/bis") 培训         
       - if (current_user)
         ul.navbar-nav
           li.nav-item: a.nav-link(href="/topic/create") 发表话题
@@ -61,22 +61,10 @@ html(lang="zh_CN")
             ul.navbar-nav 条款
               li.nav-item: a.nav-link(href="#") 服务条款
         .row.justify-content-center.copyright
-          Copyright © 2018 北京标准化研究院    
+          Copyright © 2018 中国标准化研究院    
 
     script(src="https://cdn.bootcss.com/medium-editor/5.23.3/js/medium-editor.min.js")
     != Loader('/public/javascripts/lib/lib.min.js').js('/public/javascripts/lib/jquery.min.js').js('/public/javascripts/jquery.loadData.js').js('/public/javascripts/jquery.modal.js').js('/public/javascripts/main.js').js('foundation.min.js').done(assets,null,!isDebug)
-    script
-      :uglify
-        $(function () {
-          //-  $(document).foundation();
-          $('#navBtn').click(function () {
-            $('#navUser').slideToggle(200);
-          })
-        });
-        $('#searchForm').submit(function (event) {
-          event.preventDefault();
-          var query = "site:jsclub.cc+" + $('#searchQuery').val();
-          window.open("https://www.google.com.hk/?gws_rd=cr#hl=zh-CN&q=" + query);
-        })
+ 
     block script
   
